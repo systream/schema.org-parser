@@ -9,9 +9,9 @@
 
     function assertMicroFormat(expectedOutput, htmlInput, itMsg) {
         addHtmlToPlayground(htmlInput);
-        var microformats = getMicroformats();
+        var microformats = getMicroFormats();
         it(itMsg, function () {
-            expect(microformats).toBe(expectedOutput);
+            expect(microformats).toEqual(expectedOutput);
         });
     }
 
@@ -34,7 +34,7 @@
             '<span itemprop="category">category name</span>' +
             '<span itemprop="color">black or white</span>' +
             '<span itemprop="name">product name</span>' +
-            '<span itemprop="url">http://foo.bar</span>' +
+            '<a itemprop="url" href="http://foo.bar">Foo bar</a>' +
             '</div>');
     });
 
@@ -62,27 +62,118 @@
         ];
 
         assertMicroFormat(result, '<div itemscope itemtype="http://schema.org/Product">' +
-            '<span itemprop="name">product' +
+            '<span itemprop="name">product ' +
             "\r\n name</span>" +
             '</div>');
     });
 
+    describe('One microformat trim itemprop name', function () {
+        var result = [
+            {
+                itemType: 'Product',
+                name: "product name"
+            }
+        ];
 
-    /*
+        assertMicroFormat(result, '<div itemscope itemtype="http://schema.org/Product">' +
+            '<span itemprop=" name ">product ' +
+            "\r\n name</span>" +
+            '</div>');
+    });
+
+    describe('One microformat break line itemprop name', function () {
+        var result = [
+            {
+                itemType: 'Product',
+                name: "product name"
+            }
+        ];
+
+        assertMicroFormat(result, '<div itemscope itemtype="http://schema.org/Product">' +
+            '<span itemprop=" name \r\n ' +
+            '">product ' +
+            "\r\n name</span>" +
+            '</div>');
+    });
+
     describe('Two microformat', function () {
-        assertMicroFormat([], '<html><body><a href="foo">Bar</a></body></html>');
+        var result = [
+            {
+                itemType: 'Product',
+                category: 'category name',
+                color: 'black or white',
+                name: 'product name',
+                url: 'http://foo.bar'
+            },
+            {
+                itemType: 'Product',
+                category: 'category name2',
+                color: 'black or white2',
+                name: 'product name2',
+                url: 'http://foo.bar2'
+            }
+
+        ];
+
+        assertMicroFormat(result,
+            '<div itemscope itemtype="http://schema.org/Product">' +
+            '<span itemprop="category">category name</span>' +
+            '<span itemprop="color">black or white</span>' +
+            '<span itemprop="name">product name</span>' +
+            '<link itemprop="url" href="http://foo.bar">Foo bar</link>' +
+            '</div>' +
+            '<div itemscope itemtype="http://schema.org/Product">' +
+            '<span itemprop="category">category name2</span>' +
+            '<span itemprop="color">black or white2</span>' +
+            '<span itemprop="name">product name2</span>' +
+            '<link itemprop="url" href="http://foo.bar2">Foo bar2</link>' +
+            '</div>'
+        );
     });
 
-    describe('One with sub microformat', function () {
-        assertMicroFormat([], '<html><body><a href="foo">Bar</a></body></html>');
-    });
+    describe('Two microformat with sub microformat', function () {
+        var result = [
+            {
+                itemType: 'Product',
+                category: 'category name',
+                color: 'black or white',
+                name: 'product name',
+                url: 'http://foo.bar',
+                brand: {
+                    itemType: 'Brand',
+                    url: 'http://brand.foo.bar',
+                    name: 'brand'
+                }
+            },
+            {
+                itemType: 'Product',
+                category: 'category name2',
+                color: 'black or white2',
+                name: 'product name2',
+                url: 'http://foo.bar2'
+            }
 
-    describe('Two with one sub microformat', function () {
-        assertMicroFormat([], '<html><body><a href="foo">Bar</a></body></html>');
-    });
+        ];
 
-    describe('One with 3 level sub microformat', function () {
-        assertMicroFormat([], '<html><body><a href="foo">Bar</a></body></html>');
-    });*/
+        assertMicroFormat(result,
+            '<div itemscope itemtype="http://schema.org/Product">' +
+            '<span itemprop="category">category name</span>' +
+            '<span itemprop="color">black or white</span>' +
+            '<span itemprop="name">product name</span>' +
+            '<link itemprop="url" href="http://foo.bar">Foo bar</link>' +
+            '<strong itemprop="brand" itemscope="" itemtype="http://schema.org/Brand">' +
+            '<a href="http://brand.foo.bar" itemprop="url">' +
+            '<div itemprop="name">brand</div>' +
+            '</a>' +
+            '</strong>' +
+            '</div>' +
+            '<div itemscope itemtype="http://schema.org/Product">' +
+            '<span itemprop="category">category name2</span>' +
+            '<span itemprop="color">black or white2</span>' +
+            '<span itemprop="name">product name2</span>' +
+            '<link itemprop="url" href="http://foo.bar2">123</link>' +
+            '</div>'
+        );
+    });
 
 })();

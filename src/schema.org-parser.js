@@ -1,37 +1,75 @@
-function getMicroformats() {
-	var itemScopes = document.querySelectorAll("[itemscope]"),
-		microFormats = [];
+function getMicroFormats(domElement) {
+
+    if (!domElement) {
+        domElement = document;
+    }
+
+	var itemScopes = domElement.querySelectorAll('[itemscope]'),
+		microFormats = [],
+		processedItemScopes = [],
+        processedItemProps = [];
 
     if (!itemScopes.length) {
         return microFormats;
     }
 
-	for (var x in itemScopes) {
-		if (!itemScopes.hasOwnProperty(x)) {
-			continue;
-		}
-		var currentItemScope = itemScopes[x],
-			currentResultItem = [];
+    /**
+     *
+     * @param currentItemScope
+     * @returns {{}}
+     */
+    function processItemScope(currentItemScope) {
 
-        currentResultItem['itemType'] = currentItemScope.getAttribute('itemtype');
+        var currentResultItem = {};
 
-		var itemProps = currentItemScope.querySelectorAll('[itemprop]');
+        currentResultItem['itemType'] = currentItemScope.getAttribute('itemtype').substr(18);
+        var itemProps = currentItemScope.querySelectorAll('[itemprop]');
 
-		for (var y in itemProps) {
-			if (!itemProps.hasOwnProperty(y)) {
-				continue;
-			}
+        processedItemScopes.push(currentItemScope);
 
-			var currentItemProp = itemProps[y],
-                itemPropName;
+        for (var y in itemProps) {
+            if (itemProps.hasOwnProperty(y)) {
 
-            if (currentItemProp != undefined) {
-                itemPropName = currentItemProp.getAttribute('itemprop').replace(/\s/g, "");
-                currentResultItem[itemPropName] = currentItemProp.textContent.replace(/\s/g, "");
+                if (processedItemProps.indexOf(itemProps[y]) !== -1) {
+                    continue;
+                }
+
+                var currentItemProp = itemProps[y],
+                    itemPropName;
+
+                processedItemProps.push(currentItemProp);
+
+                if (currentItemProp === undefined) {
+                    continue;
+                }
+
+                itemPropName = currentItemProp.getAttribute('itemprop').replace(/\s+/g, ' ').trim();
+
+                if (currentItemProp.hasAttribute('itemscope')) {
+                    currentResultItem[itemPropName] = processItemScope(currentItemProp);
+                } else {
+                    if (itemPropName === 'url') {
+                        currentResultItem[itemPropName] = currentItemProp
+                            .getAttribute('href').replace(/\s+/g, ' ').trim();
+                    } else {
+                        currentResultItem[itemPropName] = currentItemProp.textContent.replace(/\s+/g, ' ').trim();
+                    }
+                }
             }
-		}
+        }
+        return currentResultItem;
+    }
 
-		microFormats.push(currentResultItem);
+    // iterate throw item scopes
+	for (var x in itemScopes) {
+		if (itemScopes.hasOwnProperty(x)) {
+            if (processedItemScopes.indexOf(itemScopes[x]) !== -1) {
+                continue;
+            }
+
+            var currentResultItem = processItemScope(itemScopes[x]);
+            microFormats.push(currentResultItem);
+        }
 	}
 	return microFormats;
 }

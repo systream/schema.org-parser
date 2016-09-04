@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 	uglify: {
       options: {
         compress: {
-          drop_console: true,
+          //drop_console: true,
           cascade: true,
           passes: 3,
           warnings: true
@@ -43,10 +43,18 @@ module.exports = function(grunt) {
         }
       }
     },
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc'
+      },
+      src: [
+        'src/*.js'
+      ]
+    }
   });
 
-  grunt.registerTask('build', ['uglify']);
-  grunt.registerTask('default', ['uglify']);
+  grunt.registerTask('build', ['jshint','uglify']);
+  grunt.registerTask('default', ['jshint', 'uglify']);
 
   grunt.registerTask('test', [
     'build',
