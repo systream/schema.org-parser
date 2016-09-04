@@ -1,8 +1,5 @@
-// Karma configuration
-// Generated on Thu Jun 16 2016 16:08:42 GMT+0200 (CEST)
-
 module.exports = function(config) {
-    config.set({
+    var karmaConfig = {
         basePath: '',
         frameworks: ['jasmine'],
         files: [
@@ -31,7 +28,19 @@ module.exports = function(config) {
         autoWatch: true,
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         browsers: ['Chrome'],
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
         singleRun: false,
         concurrency: 2
-    })
+    };
+
+    if(process.env.TRAVIS){
+        karmaConfig.browsers = ['Chrome_travis_ci'];
+    }
+
+    config.set(karmaConfig);
 };
