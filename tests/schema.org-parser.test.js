@@ -38,7 +38,6 @@
             '</div>');
     });
 
-
     describe('One microformat trim', function () {
         var result = [
             {
@@ -174,6 +173,36 @@
             '<link itemprop="url" href="http://foo.bar2">123</link>' +
             '</div>'
         );
+    });
+
+    describe('Parse image', function () {
+        var result = [
+            {
+                itemType: 'Product',
+                image: 'http://foo.bar/img.jpg'
+            }
+        ];
+
+        assertMicroFormat(result, '<div itemscope ' +
+            'itemtype="http://schema.org/Product">' +
+            '<img src="http://foo.bar/img.jpg" itemprop="image" alt="test">' +
+            '</div>');
+    });
+
+    describe('Value in context attribute', function () {
+        var result = [
+            {
+                itemType: 'Offer',
+                price: '1499',
+                priceCurrency: 'HUF'
+            }
+        ];
+
+        assertMicroFormat(result,
+            '<div class="price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">' +
+            '<strong itemprop="price" content="1499">1 499 Ft ' +
+            '<span itemprop="priceCurrency" content="HUF"></span></strong> ' +
+            '</div>');
     });
 
 })();

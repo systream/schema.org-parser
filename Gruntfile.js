@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         options: {
           frameworks: ['jasmine'],
           singleRun: true,
-          browsers: ['Chrome'],
+          browsers: ['Chrome_travis_ci'],
           files: [
             'dist/*.js',
             'tests/*.test.js'

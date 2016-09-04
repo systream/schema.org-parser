@@ -13,6 +13,35 @@ function getMicroFormats(domElement) {
         return microFormats;
     }
 
+    function getItemPropValue(itemPropName, currentItemProp) {
+        var result;
+        if (itemPropName === 'url') {
+            result = currentItemProp
+                .getAttribute('href')
+                .replace(/\s+/g, ' ')
+                .trim();
+        } else if(itemPropName === 'image') {
+            result = currentItemProp
+                .getAttribute('src')
+                .replace(/\s+/g, ' ')
+                .trim();
+        } else {
+
+            if (currentItemProp.hasAttribute('content')) {
+                result = currentItemProp
+                    .getAttribute('content')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            } else {
+                result = currentItemProp
+                    .textContent
+                    .replace(/\s+/g, ' ')
+                    .trim();
+            }
+        }
+        return result;
+    }
+
     /**
      *
      * @param currentItemScope
@@ -47,14 +76,9 @@ function getMicroFormats(domElement) {
 
                 if (currentItemProp.hasAttribute('itemscope')) {
                     currentResultItem[itemPropName] = processItemScope(currentItemProp);
-                } else {
-                    if (itemPropName === 'url') {
-                        currentResultItem[itemPropName] = currentItemProp
-                            .getAttribute('href').replace(/\s+/g, ' ').trim();
-                    } else {
-                        currentResultItem[itemPropName] = currentItemProp.textContent.replace(/\s+/g, ' ').trim();
-                    }
+                    continue;
                 }
+                currentResultItem[itemPropName] = getItemPropValue(itemPropName, currentItemProp);
             }
         }
         return currentResultItem;

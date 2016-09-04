@@ -1,5 +1,5 @@
 module.exports = function(config) {
-    var karmaConfig = {
+    config.set({
         basePath: '',
         frameworks: ['jasmine'],
         files: [
@@ -26,8 +26,7 @@ module.exports = function(config) {
         colors: true,
         logLevel: config.LOG_INFO,
         autoWatch: true,
-        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['Chrome'],
+        browsers: ['Chrome_travis_ci'],
         customLaunchers: {
             Chrome_travis_ci: {
                 base: 'Chrome',
@@ -36,11 +35,5 @@ module.exports = function(config) {
         },
         singleRun: false,
         concurrency: 2
-    };
-
-    if(process.env.TRAVIS){
-        karmaConfig.browsers = ['Chrome_travis_ci'];
-    }
-
-    config.set(karmaConfig);
+    });
 };
