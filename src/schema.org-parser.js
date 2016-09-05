@@ -51,7 +51,7 @@ function getMicroFormats(domElement) {
 
 		var currentResultItem = {};
 
-		currentResultItem['itemType'] = currentItemScope.getAttribute('itemtype').substr(18);
+		currentResultItem['@type'] = currentItemScope.getAttribute('itemtype').substr(18);
 		var itemProps = currentItemScope.querySelectorAll('[itemprop]');
 
 		processedItemScopes.push(currentItemScope);

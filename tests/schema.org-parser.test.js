@@ -22,7 +22,7 @@
     describe('One microformat', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 category: 'category name',
                 color: 'black or white',
                 name: 'product name',
@@ -41,7 +41,7 @@
     describe('One microformat trim', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 name: 'product name'
             }
         ];
@@ -55,7 +55,7 @@
     describe('One microformat trim break line', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 name: "product name"
             }
         ];
@@ -69,7 +69,7 @@
     describe('One microformat trim itemprop name', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 name: "product name"
             }
         ];
@@ -83,7 +83,7 @@
     describe('One microformat break line itemprop name', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 name: "product name"
             }
         ];
@@ -98,14 +98,14 @@
     describe('Two microformat', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 category: 'category name',
                 color: 'black or white',
                 name: 'product name',
                 url: 'http://foo.bar'
             },
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 category: 'category name2',
                 color: 'black or white2',
                 name: 'product name2',
@@ -133,19 +133,19 @@
     describe('Two microformat with sub microformat', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 category: 'category name',
                 color: 'black or white',
                 name: 'product name',
                 url: 'http://foo.bar',
                 brand: {
-                    itemType: 'Brand',
+                    '@type': 'Brand',
                     url: 'http://brand.foo.bar',
                     name: 'brand'
                 }
             },
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 category: 'category name2',
                 color: 'black or white2',
                 name: 'product name2',
@@ -178,7 +178,7 @@
     describe('Parse image', function () {
         var result = [
             {
-                itemType: 'Product',
+                '@type': 'Product',
                 image: 'http://foo.bar/img.jpg'
             }
         ];
@@ -192,7 +192,7 @@
     describe('Value in context attribute', function () {
         var result = [
             {
-                itemType: 'Offer',
+                '@type': 'Offer',
                 price: '1499',
                 priceCurrency: 'HUF'
             }
