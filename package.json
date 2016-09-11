@@ -1,6 +1,6 @@
 {
   "name": "schema.org-parser",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Schema.org microformat parser",
   "devDependencies": {
     "grunt": "^0.4.5",
