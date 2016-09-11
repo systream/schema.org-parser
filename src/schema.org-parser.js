@@ -14,6 +14,14 @@ function getMicroFormats(domElement) {
 	}
 
 	function getItemPropValue(itemPropName, currentItemProp) {
+
+		if (currentItemProp.hasAttribute('content')) {
+			return currentItemProp
+				.getAttribute('content')
+				.replace(/\s+/g, ' ')
+				.trim();
+		}
+
 		var result;
 		if (itemPropName === 'url') {
 			result = currentItemProp
@@ -26,18 +34,11 @@ function getMicroFormats(domElement) {
 				.replace(/\s+/g, ' ')
 				.trim();
 		} else {
+			result = currentItemProp
+				.textContent
+				.replace(/\s+/g, ' ')
+				.trim();
 
-			if (currentItemProp.hasAttribute('content')) {
-				result = currentItemProp
-					.getAttribute('content')
-					.replace(/\s+/g, ' ')
-					.trim();
-			} else {
-				result = currentItemProp
-					.textContent
-					.replace(/\s+/g, ' ')
-					.trim();
-			}
 		}
 		return result;
 	}

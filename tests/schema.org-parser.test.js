@@ -205,4 +205,24 @@
             '</div>');
     });
 
+    describe('Itemprop url has contenct attribute', function () {
+        var result = [
+            {
+                '@type': 'Offer',
+                price: '1499',
+                priceCurrency: 'HUF',
+                url: 'http://brand.foo.bar'
+            }
+        ];
+
+        assertMicroFormat(result,
+            '<div class="price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">' +
+            '<strong itemprop="price" content="1499">1 499 Ft ' +
+            '<span itemprop="priceCurrency" content="HUF"></span></strong> ' +
+            '<a content="http://brand.foo.bar" itemprop="url">' +
+            ' foo ' +
+            '</a>' +
+            '</div>');
+    });
+
 })();
